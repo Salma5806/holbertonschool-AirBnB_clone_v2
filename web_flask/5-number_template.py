@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 This module is a simple Flask application that defines several routes:
 Routes:
@@ -12,48 +11,54 @@ the default message "is cool" is used.
 - The "/number/<int:n>" page is a dynamic route that
 displays the message "<n> is a number" when visited,
 where <n> is a provided integer.
-
+- /number_template/<n>: display a HTML page only if n is an integer
 """
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
-def Hello_HBNB():
-    """Displays 'Hello HBNB!'"""
-    return 'Hello HBNB!'
+@app.route("/", strict_slashes=False)
+def hello_hbnb():
+    """View function displays Hello HBNB!"""
+    return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
-def HBNB():
-    """Displays 'HBNB'"""
+def hbnb():
+    """View function displays HBNB"""
     return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
-def C(text):
-    """Displays 'C'"""
-    return 'C {}'.format(text.replace('_', ' '))
+def c(text):
+    """Dynamic function display 'C ',
+    followed by the value of the text variable.
+    """
+    return "C {}".format(text.replace("_", " "))
 
 
-@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route("/python/", defaults={"text": "is cool"}, strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def python(text):
-    """Displays 'Python'"""
-    return 'Python {}'.format(text.replace('_', ' '))
+    """Dynamic function displays Python followed by the value
+    of the text variable.
+    """
+    return "Python {}".format(text.replace("_", " "))
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
+@app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
-    """Displays a number"""
+    """View function displays n if it's only integer"""
     return "{} is a number".format(n)
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
+
+@app.route("/number_template/<int:n>", strict_slashes=False)
 def number_template(n):
-    """template path"""
-    return render_template('5-number.html', n=n)
-    
+    """Displays HTML page if n is int"""
+    return render_template("5-number.html", n=n)
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host="0.0.0.0", port=5000)
